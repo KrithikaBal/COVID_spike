@@ -47,3 +47,13 @@ These instructions reproduce the “Spike tree” for April + May 2025 sequences
 ```bash
 # Combine the April and May GISAID FASTA files into one:
 cat gisaid_april.fasta gisaid_may.fasta > gisaid_april_may.fasta
+
+### 2. Alignment
+
+```bash
+# Align it with the refrence genome from nextstrain
+nextclade run \
+  -D nextstrain__sars-cov-2__BA.2.86__2025-05-05--13-15-29Z \
+  -O nextclade_output_april_may \
+  --verbose 1 \
+  gisaid_april_may.fasta
