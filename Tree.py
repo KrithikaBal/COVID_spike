@@ -39,7 +39,7 @@ plt.rcParams["image.cmap"]     = "viridis"
 # ──────────────────────────────────────────────────────────────────────────────
 # 2) File paths & sanity checks
 # ──────────────────────────────────────────────────────────────────────────────
-OUTDIR        = "nextclade_output_april_may"
+OUTDIR        = "nextclade_output_Mar_May"
 NEXTCLADE_CSV = os.path.join(OUTDIR, "nextclade.csv")
 FULL_TREE     = os.path.join(OUTDIR, "nextclade.nwk")
 
@@ -76,9 +76,9 @@ seq_to_lineage = dict(zip(df_good["seqName"], df_good["Nextclade_pango"]))
 seq_to_spike   = dict(zip(df_good["seqName"], df_good["spikeProfile"]))
 
 # ──────────────────────────────────────────────────────────────────────────────
-# 4) Count “good” genomes per lineage & define MIN_COUNT = 50
+# 4) Count “good” genomes per lineage & define MIN_COUNT = 130
 # ──────────────────────────────────────────────────────────────────────────────
-MIN_COUNT = 25
+MIN_COUNT = 135
 print(f"→ MIN_COUNT = {MIN_COUNT} …")
 
 lineage_counts = Counter(df_good["Nextclade_pango"])
@@ -162,13 +162,13 @@ mode_profiles = set(lin_to_mode_spike.values())
 n_profiles    = len(mode_profiles)
 print(f"→ {n_profiles} unique mode Spike‐profiles across {len(reps)} lineages.")
 
-if n_profiles <= 20:
-    cmap = plt.cm.tab20
-else:
-    cmap = plt.cm.get_cmap("tab20b", n_profiles)
+# ──────────────────────────────────────────────────────────────────────────────
+# Use a large qualitative‐type palette (“gist_ncar”) to generate n_profiles distinct colors
+# ──────────────────────────────────────────────────────────────────────────────
+cmap = plt.get_cmap("gist_ncar", n_profiles)
 
 profile_to_color = {
-    prof: cmap(i / (n_profiles - 1 if n_profiles > 1 else 1))
+    prof: cmap(i)
     for i, prof in enumerate(sorted(mode_profiles, key=lambda s: ",".join(sorted(s))))
 }
 
@@ -191,7 +191,7 @@ for clade in tree.get_terminals():
 print("→ Plotting tree with colored‐dot fallback … (dots placed exactly at nodes)")
 
 n_tips     = len(tree.get_terminals())
-fig_height = max(6, 0.01 * n_tips)   # ~0.01" per tip
+fig_height = max(6, 0.01 * n_tips)   # ~0.01″ per tip
 
 # Make figure wider to accommodate long branches:
 fig = plt.figure(figsize=(15, fig_height))
@@ -219,7 +219,7 @@ for clade in tree.get_terminals():
 # 10c) Compute delta_label = small left‐shift for fallback (in case exact coords missing)
 # ──────────────────────────────────────────────────────────────────────────────
 x_min, x_max = ax.get_xlim()
-delta_label = (x_max - x_min) * 0.0017  # ~1% of horizontal span
+delta_label = (x_max - x_min) * 0.0017  # ~0.17% of horizontal span
 
 # ──────────────────────────────────────────────────────────────────────────────
 # 10d) Overlay a smaller circle at each tip
@@ -233,7 +233,7 @@ for clade in tree.get_terminals():
         x_i, y_i = exact_xy[lbl]
         ax.scatter(
             [x_i], [y_i],
-            s=20,                # smaller circle
+            s=30,                # smaller circle
             facecolor=[rgba],
             edgecolors="none",
             transform=ax.transData
@@ -247,7 +247,7 @@ for clade in tree.get_terminals():
             x_text, y_text = txt.get_position()
             ax.scatter(
                 [x_text - delta_label], [y_text],
-                s=20,                # smaller circle
+                s=30,                # slightly larger circle if needed
                 facecolor=[rgba],
                 edgecolors="none",
                 transform=ax.transData
