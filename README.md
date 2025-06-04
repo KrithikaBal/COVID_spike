@@ -4,16 +4,15 @@ A repository for generating and visualizing a SARS-CoV-2 Spike-profile phylogene
 
 ---
 
-## 📂 Output Files
+## 📂 Output Files: Mar - May
 
 - **Spike tree** (PNG):  
-  `nextclade_output_april_may/lineage_tree_dots_fallback.png`  
-  ![Spike Tree](nextclade_output_april_may/lineage_tree_dots_fallback.png)
+  `nextclade_output_Mar_May/lineage_tree_dots_fallback.png`  
+  ![Spike Tree](nextclade_output_Mar_May/lineage_tree_dots_fallback.png)
 
 - **Spike legend** (PNG):  
-  `nextclade_output_april_may/spike_legend.png`  
-  ![Spike Legend](nextclade_output_april_may/spike_legend.png)
-
+  `nextclade_output_Mar_May/spike_legend.png`  
+  ![Spike Legend](nextclade_output_Mar_May/spike_legend.png)
 ---
 
 ## 🔬 Overview
@@ -46,14 +45,26 @@ These instructions reproduce the “Spike tree” for April + May 2025 sequences
 
 ```bash
 # Combine the April and May GISAID FASTA files into one:
-cat gisaid_april.fasta gisaid_may.fasta > gisaid_april_may.fasta
+cat gisaid_april.fasta gisaid_may.fasta > combined.fasta
+```
 
 ### 2. Alignment
 
 ```bash
-# Align it with the refrence genome from nextstrain
 nextclade run \
   -D nextstrain__sars-cov-2__BA.2.86__2025-05-05--13-15-29Z \
-  -O nextclade_output_april_may \
-  --verbose 1 \
-  gisaid_april_may.fasta
+  -O nextclade_output \
+  combined.fasta
+```
+
+### 3. Alignment-light options for bulky fasta file: 
+
+```bash
+nextclade run \
+  -D nextstrain__sars-cov-2__BA.2.86__2025-05-05--13-15-29Z \
+  --jobs=1 \
+  --in-order \
+  --output-csv nextclade_output/nextclade.csv \
+  --output-tree-nwk nextclade_output/nextclade.nwk \
+  combined.fasta
+```
