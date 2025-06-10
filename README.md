@@ -13,6 +13,8 @@ A repository for generating and visualizing a SARS-CoV-2 Spike-profile phylogene
 - **Spike legend** (PNG):  
   `nextclade_output_Mar_May/spike_legend.png`  
   ![Spike Legend](nextclade_output_Mar_May/spike_legend.png)
+
+Make the tree staggered!!!
 ---
 
 ## 🔬 Overview
