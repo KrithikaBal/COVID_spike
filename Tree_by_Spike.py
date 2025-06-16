@@ -36,8 +36,8 @@ plt.rcParams.update({
 })
 
 # Paths
-out_dir = 'nextclade_output_Mar_May'
-csv_in  = os.path.join(out_dir, 'nextclade.csv')
+out_dir = 'nextclade_output_Mar_June'
+csv_in  = os.path.join(out_dir, 'nextclade_combined.csv')
 tree_nwk= os.path.join(out_dir, 'spike_clustered_tree.nwk')
 tree_pdf= os.path.join(out_dir, 'spike_clustered_tree.pdf')
 tree_svg= os.path.join(out_dir, 'spike_clustered_tree.svg')
@@ -63,7 +63,7 @@ seq2lin = dict(zip(df.seqName, df.Nextclade_pango))
 seq2prof= dict(zip(df.seqName, df.profile))
 
 # 2) Collapse rare lineages
-MIN_COUNT = 135
+MIN_COUNT = 100
 counts = Counter(df.Nextclade_pango)
 common = {lin for lin,c in counts.items() if c >= MIN_COUNT}
 def collapse_lin(lin):
